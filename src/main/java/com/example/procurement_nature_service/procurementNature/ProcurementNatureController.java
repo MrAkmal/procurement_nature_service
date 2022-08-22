@@ -1,15 +1,13 @@
 package com.example.procurement_nature_service.procurementNature;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @RestController
+@RequestMapping("/v1/procurement_nature")
 public class ProcurementNatureController {
-
 
     private final ProcurementNatureService service;
 
@@ -20,44 +18,40 @@ public class ProcurementNatureController {
 
 
     @PostMapping
-    public ResponseEntity<Integer> create(@RequestBody ProcurementNature procurementNature) {
-        Integer id = service.save(procurementNature);
+    public Mono<ProcurementNature> save(@RequestBody ProcurementNature procurementMethod) {
 
-        return new ResponseEntity<>(id, HttpStatus.OK);
+        return service.save(procurementMethod);
     }
 
 
-    @PutMapping()
-    public ResponseEntity<Integer> update(@RequestBody ProcurementNature procurementNature) {
+    @PutMapping
+    public Mono<ProcurementNature> update(@RequestBody ProcurementNature method) {
 
-        Integer id = service.update(procurementNature);
-
-        return new ResponseEntity<>(id, HttpStatus.OK);
+        return service.update(method);
 
     }
+
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Integer> delete(@PathVariable("id") int deletedId) {
+    public Mono<Void> delete(@PathVariable Integer id) {
 
-        Integer id = service.delete(deletedId);
+        return service.delete(id);
 
-        return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ProcurementNature> get(@PathVariable("id") int id) {
 
-        ProcurementNature procurementNature = service.get(id);
-        return new ResponseEntity<>(procurementNature, HttpStatus.OK);
+    @GetMapping("/{id}")
+    public Mono<ProcurementNature> get(@PathVariable Integer id) {
+
+        System.out.println("id = " + id);
+        return service.get(id);
 
     }
 
     @GetMapping
-    public ResponseEntity<List<ProcurementNature>> getAll() {
+    public Flux<ProcurementNature> getAll() {
 
-        List<ProcurementNature> procurementNatures = service.getAll();
-
-        return new ResponseEntity<>(procurementNatures, HttpStatus.OK);
+        return service.getAll();
     }
 
 

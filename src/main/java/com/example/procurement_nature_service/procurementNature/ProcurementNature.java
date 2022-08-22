@@ -1,26 +1,27 @@
 package com.example.procurement_nature_service.procurementNature;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import javax.persistence.*;
+import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@ToString
 @NoArgsConstructor
-@Entity
 @Table(name = "procurement_nature")
 public class ProcurementNature {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column("id")
     private int id;
 
-
+    @Column("name")
     private String name;
 
-
+    public ProcurementNature(String name) {
+        this.name = name;
+    }
 }
