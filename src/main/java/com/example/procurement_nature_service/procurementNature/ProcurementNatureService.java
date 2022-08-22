@@ -2,9 +2,8 @@ package com.example.procurement_nature_service.procurementNature;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public class ProcurementNatureService {
@@ -19,43 +18,35 @@ public class ProcurementNatureService {
     }
 
 
-    public Integer save(ProcurementNature procurementNature) {
+    public Mono<ProcurementNature> save(ProcurementNature procurementNature) {
 
-        ProcurementNature nature = repository.save(procurementNature);
-        return nature.getId();
+        Mono<ProcurementNature> save = repository.save(procurementNature);
+        return save;
     }
 
-    public Integer update(ProcurementNature procurementNature) {
-
-        Optional<ProcurementNature> optional = repository.findById(procurementNature.getId());
-
-        if (optional.isEmpty())
-            throw new RuntimeException("ProcurementNature not found by id - " + procurementNature.getId());
-
-        ProcurementNature nature = repository.save(procurementNature);
-        return nature.getId();
+    public Mono<ProcurementNature> update(ProcurementNature procurementNature) {
+        Mono<ProcurementNature> save = repository.save(procurementNature);
+        return save;
     }
 
-    public Integer delete(int deletedId) {
-        repository.deleteById(deletedId);
-        return deletedId;
+    public Mono<Void> delete(Integer deletedId) {
+        Mono<Void> voidMono = repository.deleteById(deletedId);
+        return voidMono;
     }
 
-    public ProcurementNature get(int id) {
+    public Mono<ProcurementNature> get(int id) {
 
-        Optional<ProcurementNature> optional = repository.findById(id);
+        Mono<ProcurementNature> mono = repository.findById(id);
 
-        if (optional.isEmpty()) throw new RuntimeException("ProcurementNature not found by id - " + id);
-
-        return optional.get();
+        return mono;
     }
 
-    public List<ProcurementNature> getAll() {
+    public Flux<ProcurementNature> getAll() {
 
-        List<ProcurementNature> natures = repository.findAll();
+        Flux<ProcurementNature> all = repository.findAll();
 
-        if (natures.isEmpty()) throw new RuntimeException("ProcurementNatures not found");
+        System.out.println("all = " + all);
 
-        return natures;
+        return all;
     }
 }
