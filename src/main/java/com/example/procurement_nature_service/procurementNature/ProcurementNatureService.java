@@ -1,6 +1,7 @@
 package com.example.procurement_nature_service.procurementNature;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -57,6 +58,15 @@ public class ProcurementNatureService {
     public Flux<ProcurementNature> getAll() {
 
         Flux<ProcurementNature> all = repository.findAll();
+
+        System.out.println("all = " + all);
+
+        return all;
+    }
+
+    public Flux<ProcurementNature> getAll(String fieldName) {
+
+        Flux<ProcurementNature> all = repository.findAll(Sort.by(Sort.Direction.ASC,fieldName));
 
         System.out.println("all = " + all);
 
