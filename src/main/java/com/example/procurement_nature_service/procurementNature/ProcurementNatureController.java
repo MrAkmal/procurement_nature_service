@@ -48,10 +48,16 @@ public class ProcurementNatureController {
 
     }
 
-    @GetMapping
+    @GetMapping("/list")
     public Flux<ProcurementNature> getAll() {
 
         return service.getAll();
+    }
+
+    @GetMapping
+    public Flux<ProcurementNature> getAllSort(@RequestParam(required = false, defaultValue = "id") String fieldName) {
+
+        return service.getAll(fieldName);
     }
 
 
