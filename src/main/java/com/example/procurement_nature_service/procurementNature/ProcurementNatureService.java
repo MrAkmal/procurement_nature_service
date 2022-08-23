@@ -38,6 +38,8 @@ public class ProcurementNatureService {
 
         Mono<ProcurementNature> mono = repository.findById(id);
 
+//        mono.switchIfEmpty();
+
         return mono;
     }
 

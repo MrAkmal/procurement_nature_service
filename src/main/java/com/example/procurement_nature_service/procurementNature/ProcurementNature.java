@@ -2,7 +2,6 @@ package com.example.procurement_nature_service.procurementNature;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
