@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
+
 @Service
 public class ProcurementNatureService {
 
@@ -28,13 +30,15 @@ public class ProcurementNatureService {
     public Mono<ProcurementNature> update(ProcurementNature procurementNature) {
 
         return repository.findById(procurementNature.getId())
-                .flatMap(procurementMethod -> repository.findProcurementMethodByIdAndName(procurementNature.getName(), procurementNature.getId())
-                        .flatMap(p -> repository.save(procurementNature))
-                        .switchIfEmpty(
-                                repository.findProcurementMethodByIdAndNameNot(procurementNature.getName(), procurementNature.getId())
-                                        .flatMap(Mono::just)
-                                        .switchIfEmpty(repository.save(procurementNature))
-                        ))
+                .flatMap(procurementNature1 -> {
+                    if (Objects.equals(procurementNature1.getName(), procurementNature.getName())) {
+                        return repository.save(procurementNature);
+                    } else {
+                        return repository.findProcurementNatureIdAndNameNot(procurementNature.getName(), procurementNature.getId())
+                                .flatMap(Mono::just)
+                                .switchIfEmpty(repository.save(procurementNature));
+                    }
+                })
                 .switchIfEmpty(Mono.just(procurementNature));
     }
 

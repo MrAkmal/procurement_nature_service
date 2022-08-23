@@ -13,8 +13,8 @@ public interface ProcurementNatureRepository extends R2dbcRepository<Procurement
 
 
     @Query("select * from procurement_nature where name = :#{#name} and id = :#{#id} ")
-    Mono<ProcurementNature> findProcurementMethodByIdAndName(String name, int id);
+    Mono<ProcurementNature> findProcurementNatureByIdAndName(String name, int id);
 
     @Query("select * from procurement_nature where name = :#{#name} and id <> :#{#id} ")
-    Mono<ProcurementNature> findProcurementMethodByIdAndNameNot(String name, int id);
+    Mono<ProcurementNature> findProcurementNatureIdAndNameNot(String name, int id);
 }
