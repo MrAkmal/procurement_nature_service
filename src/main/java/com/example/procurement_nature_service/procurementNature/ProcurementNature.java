@@ -20,8 +20,4 @@ public class ProcurementNature {
 
     @Column("name")
     private String name;
-
-    public ProcurementNature(String name) {
-        this.name = name;
-    }
 }

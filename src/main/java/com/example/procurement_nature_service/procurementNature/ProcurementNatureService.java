@@ -20,13 +20,22 @@ public class ProcurementNatureService {
 
     public Mono<ProcurementNature> save(ProcurementNature procurementNature) {
 
-        Mono<ProcurementNature> save = repository.save(procurementNature);
-        return save;
+        return repository.findProcurementNatureByName(procurementNature.getName())
+                .flatMap(Mono::just)
+                .switchIfEmpty(repository.save(procurementNature));
     }
 
     public Mono<ProcurementNature> update(ProcurementNature procurementNature) {
-        Mono<ProcurementNature> save = repository.save(procurementNature);
-        return save;
+
+        return repository.findById(procurementNature.getId())
+                .flatMap(procurementMethod -> repository.findProcurementMethodByIdAndName(procurementNature.getName(), procurementNature.getId())
+                        .flatMap(p -> repository.save(procurementNature))
+                        .switchIfEmpty(
+                                repository.findProcurementMethodByIdAndNameNot(procurementNature.getName(), procurementNature.getId())
+                                        .flatMap(Mono::just)
+                                        .switchIfEmpty(repository.save(procurementNature))
+                        ))
+                .switchIfEmpty(Mono.just(procurementNature));
     }
 
     public Mono<Void> delete(Integer deletedId) {
@@ -34,10 +43,9 @@ public class ProcurementNatureService {
         return voidMono;
     }
 
-    public Mono<ProcurementNature> get(int id) {
+    public Mono<ProcurementNature> get(Integer id) {
 
         Mono<ProcurementNature> mono = repository.findById(id);
-
         return mono;
     }
 
